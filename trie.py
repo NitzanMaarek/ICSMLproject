@@ -18,10 +18,11 @@ class TrieNode(object):
 
 class Trie:
 
-    def __init__(self):
+    def __init__(self, description):
         """
         Return root
         """
+        self.description = description
         self.root = TrieNode('*', '')
 
     def get_root(self):

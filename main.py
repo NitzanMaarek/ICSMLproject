@@ -5,6 +5,7 @@ from typing import Tuple
 from trie import Trie
 import time
 import random
+import pickle
 
 def create_pygtrie_of_dataset(df):
     """
@@ -26,14 +27,14 @@ def create_pygtrie_of_dataset(df):
 
 def pipeline():
 
-    malicious_dataset = pd.read_parquet(r"data.parquet", engine='pyarrow', columns=["url"])
+    # malicious_dataset = pd.read_parquet(r"data.parquet", engine='pyarrow', columns=["url"])
     benign_dataset = pd.read_csv(r"alexa_top-1m.csv")
-    # malicious_dataset = pd.read_csv(r"Malicious_urls_only_100.csv")
+    malicious_dataset = pd.read_csv(r"Malicious_urls_only_100.csv")
 
-    # benign_dataset = benign_dataset.head(10000)
+    benign_dataset = benign_dataset.head(1000)
 
-    malicious_trie = Trie()
-    benign_trie = Trie()
+    malicious_trie = Trie('Malicious')
+    benign_trie = Trie('Benign')
 
     mal_tree_time_start = time.time()
     print('Started building malicious trie')
@@ -49,6 +50,29 @@ def pipeline():
 
     url_dict = how_deep_did_malicious_dataset_get(malicious_dataset, benign_trie)
     print(url_dict)
+
+    save_trie_pickle(malicious_trie)
+    time.sleep(4)
+    mal_trie_loaded = load_trie_pickle('Malicious.pickle')
+    print(mal_trie_loaded)
+
+
+def save_trie_pickle(trie):
+    with open(trie.description + '.pickle', 'wb') as file:
+        pickle.dump(trie, file, protocol=pickle.HIGHEST_PROTOCOL)
+    # pickle.dumps(trie, open(trie.description + '.p', 'wb'), protocol=pickle.HIGHEST_PROTOCOL)
+
+
+def load_trie_pickle(path):
+    """
+    Loads Trie object from pickle file
+    :param path: path of file
+    :return: Trie object
+    """
+    with open(path, 'rb') as file:
+        trie = pickle.load(file)
+    # pickle.load(open(path, 'rb'))
+    return trie
 
 def how_deep_did_malicious_dataset_get(mal_df, benign_tree: Trie):
     """
