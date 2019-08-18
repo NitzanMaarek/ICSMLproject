@@ -7,6 +7,7 @@ import time
 import random
 import pickle
 
+
 def create_pygtrie_of_dataset(df):
     """
     Creates dataset with column "url", creates and returns CharTrie from that column.
@@ -27,34 +28,67 @@ def create_pygtrie_of_dataset(df):
 
 def pipeline():
 
+    # *** Read the dataset to memory ***
     # malicious_dataset = pd.read_parquet(r"data.parquet", engine='pyarrow', columns=["url"])
+    # malicious_dataset = pd.read_csv(r"failed_dataset.csv")
+    malicious_dataset = pd.read_csv(r"Malicious_urls_only_800k.csv")
+
     benign_dataset = pd.read_csv(r"alexa_top-1m.csv")
-    malicious_dataset = pd.read_csv(r"Malicious_urls_only_100.csv")
+    # benign_dataset = benign_dataset.head(800000)
 
-    benign_dataset = benign_dataset.head(1000)
-
+    # *** Initiating tries ***
     malicious_trie = Trie('Malicious')
-    benign_trie = Trie('Benign')
+    benign_trie = Trie('Benign_1m_Trie')
 
-    mal_tree_time_start = time.time()
-    print('Started building malicious trie')
-    malicious_trie = insert_values_to_trie(malicious_trie, malicious_dataset)
-    mal_tree_time_end = time.time()
-    print('Finished building malicious trie in: ' + str(mal_tree_time_end - mal_tree_time_start))
+    # *** Creating malicious trie tree ***
+    # mal_tree_time_start = time.time()
+    # print('Started building malicious trie')
+    # malicious_trie = insert_values_to_trie(malicious_trie, malicious_dataset)
+    # mal_tree_time_end = time.time()
+    # print('Finished building malicious trie in: ' + str(mal_tree_time_end - mal_tree_time_start))
 
-    benign_tree_time_start = time.time()
-    print('Started building benign trie')
-    benign_trie = insert_values_to_trie(benign_trie, benign_dataset)
-    benign_tree_time_end = time.time()
-    print('Finished building benign trie in:     ' + str(benign_tree_time_end - benign_tree_time_start))
+    # # *** Creating benign trie tree ***
+    # benign_tree_time_start = time.time()
+    # print('Started building benign trie')
+    # benign_trie = insert_values_to_trie(benign_trie, benign_dataset)
+    # benign_tree_time_end = time.time()
+    # print('Finished building benign trie in:     ' + str(benign_tree_time_end - benign_tree_time_start))
+    #
+    # # *** How deep down the tree did the malicious dataset get until first error ***
+    # # url_dict = how_deep_did_malicious_dataset_get(malicious_dataset, benign_trie)
+    # # print(url_dict)
+    #
+    #
+    # # *** PROBABILITY TESTING *****
+    # # some_node = malicious_trie.get_node_by_prefix(malicious_trie.get_root(), 'nseralum')
+    # # a_node = malicious_trie.get_node_by_prefix(malicious_trie.get_root(), 'nseralum.')
+    # # print(some_node.get_node_sequence_probability())
+    # # print(a_node.get_node_sequence_probability())
+    # # print('{0:.10f}'.format(some_node.get_node_sequence_probability()))
+    # # print('{0:.10f}'.format(a_node.get_node_sequence_probability()))
+    #
+    #
+    # # ***** PICKLE TESTING *****
+    # # malicious_saving_time_start = time.time()
+    # # save_trie_pickle(malicious_trie)
+    # # malicious_saving_time_end = time.time()
+    # # print('Finished saving malicious compressed trie structure in: ' + str(malicious_saving_time_end - malicious_saving_time_start))
+    #
+    # benign_saving_time_start = time.time()
+    # save_trie_pickle(benign_trie)
+    # benign_saving_time_end = time.time()
+    # print('Finished saving benign compressed trie structure in: ' + str(benign_saving_time_end - benign_saving_time_start))
+    # print('Program Finished')
+    # time.sleep(4)
+    # mal_trie_loaded = load_trie_pickle('Malicious.pickle')
 
-    url_dict = how_deep_did_malicious_dataset_get(malicious_dataset, benign_trie)
-    print(url_dict)
+    benign_loading_time_start = time.time()
+    benign_trie_loaded = load_trie_pickle('Benign_1m_Trie.pickle')
+    benign_loading_time_end = time.time()
+    print('Finished loading benign compressed trie structure in: ' + str(benign_loading_time_end - benign_loading_time_start))
 
-    save_trie_pickle(malicious_trie)
-    time.sleep(4)
-    mal_trie_loaded = load_trie_pickle('Malicious.pickle')
-    print(mal_trie_loaded)
+    # print(mal_trie_loaded)
+    # print(benign_trie_loaded)
 
 
 def save_trie_pickle(trie):
@@ -73,6 +107,7 @@ def load_trie_pickle(path):
         trie = pickle.load(file)
     # pickle.load(open(path, 'rb'))
     return trie
+
 
 def how_deep_did_malicious_dataset_get(mal_df, benign_tree: Trie):
     """
@@ -93,9 +128,17 @@ def how_deep_did_malicious_dataset_get(mal_df, benign_tree: Trie):
 
 
 def calculate_random_deep_search(url_dict, url_name, benign_tree, root):
+    """
+
+    :param url_dict:
+    :param url_name:
+    :param benign_tree:
+    :param root:
+    :return:
+    """
     # benign_root = benign_tree.get_root
     url_len = len(url_name)
-    url_dict[url_name] = [0] * url_len
+    url_dict[url_name] = [0] * url_len      # Init dictionary value with a list of 0's the size of the url string.
     lookup = ''
     # prev_suffix = ''
     last_correct_node = None
@@ -104,7 +147,7 @@ def calculate_random_deep_search(url_dict, url_name, benign_tree, root):
     for i in range(0, url_len - 1):
         char = search_word[search_word_counter]
         lookup += char
-        search_result_node = benign_tree.get_node_by_prefix(root, lookup)  # tuple = (true/false, node counter)
+        search_result_node = benign_tree.get_node_by_prefix(root, lookup)  # return tuple = (true/false, node counter)
         if search_result_node is not None:  # prefix found
             url_dict[url_name][i] = 0
             last_correct_node = search_result_node
@@ -127,22 +170,17 @@ def calculate_random_deep_search(url_dict, url_name, benign_tree, root):
                     # search_word[1] = str(random_child.char)
                     # search_word = ''.join(search_word)
 
-
-
 def mark_the_rest_1s(url_dict, url_name, i):
+    """
+
+    :param url_dict:
+    :param url_name:
+    :param i:
+    :return:
+    """
     for j in range(i+1, len(url_name)-1):
         url_dict[url_name][j] = 1
     # return url_dict
-
-def how_deep_did_i_get(digging_trie, hole_trie):
-    """
-    Method checks for each node in the digging_trie how deep did it get in the hole_trie
-    :param digging_trie: Trie which we check how it fits in hole_trie
-    :param hole_trie: Trie which is checked on.
-    :return: root of trie: trieNode
-    """
-    # digging_iter = digging_iter.iteritems()
-
 
 def insert_values_to_trie(trie, df):
     """
@@ -155,7 +193,9 @@ def insert_values_to_trie(trie, df):
     i = 0
     for row in df.iterrows():
         word = row[1]['url']
-        # print(i)
+        if i % 10000 == 0:
+            print(i)
+            print(word)
         i += 1
         trie.add(trie_root, word)
 
@@ -164,7 +204,7 @@ def insert_values_to_trie(trie, df):
 
 if __name__ == "__main__":
     pipeline()
-
+    print('Out of Pipeline')
 
     # malicious_urls = create_pygtrie_of_dataset(malicious_dataset.head(100))
     # benign_trie = create_pygtrie_of_dataset(benign_dataset)

@@ -3,10 +3,12 @@ from typing import Tuple
 
 class TrieNode(object):
     """
-    Our trie node implementation. Very basic. but does the job
+    Class of a Trie Node.
+    A node contains its' char, accumulating chars, counter of occurrences, flag if word completed and pointer to parent.
+    Root node has None as a parent pointer.
     """
 
-    def __init__(self, char: str, acc_word):
+    def __init__(self, char: str, acc_word, parent):
         self.char = char
         self.children = []
         # Is it the last character of the word.`
@@ -14,6 +16,46 @@ class TrieNode(object):
         # How many times this character appeared in the addition process
         self.counter = 1
         self.accumulative_value = acc_word
+        self.parent = parent
+
+    def get_node_sequence_probability(self):
+        """
+        Method returns for given node the (empirical) conditional probability
+        :return: Float = the probability
+        """
+        if self.parent is not None:     # Node isn't root
+            parent_probability = self.parent.get_node_sequence_probability()
+            total_occurrences_under_parent = self.parent.get_number_of_children_occurrences()
+        else:       # Node is root
+            parent_probability = 1
+            total_occurrences_under_parent = self.get_number_of_children_occurrences()
+        node_probability = self.counter/total_occurrences_under_parent
+        node_conditional_probability = node_probability * parent_probability
+        return node_conditional_probability
+
+    def get_node_probability(self):
+        """
+        Method returns the probability of node given its' parent.
+        :return: Float = the probability
+        """
+        if self.parent is not None:     # Node isn't root
+            total_occurrences_under_parent = self.parent.get_number_of_children_occurrences()
+        else:   # Node is root
+            total_occurrences_under_parent = self.get_number_of_children_occurrences()
+        node_probability = self.counter/total_occurrences_under_parent
+        return node_probability
+
+    def get_number_of_children_occurrences(self):
+        """
+        Method sums all of the node's children's counters.
+        :return: Total counter of all children.
+        """
+        number_of_children_occurrences = 0
+
+        for child in self.children:
+            number_of_children_occurrences += child.counter
+
+        return number_of_children_occurrences
 
 
 class Trie:
@@ -23,7 +65,7 @@ class Trie:
         Return root
         """
         self.description = description
-        self.root = TrieNode('*', '')
+        self.root = TrieNode('*', '', None)
 
     def get_root(self):
         return self.root
@@ -33,25 +75,28 @@ class Trie:
         Adding a word in the trie structure
         """
         node = root
-        for char in word:
-            found_in_child = False
-            # Search for the character in the children of the present `node`
-            for child in node.children:
-                if child.char == char:
-                    # We found it, increase the counter by 1 to keep track that another
-                    # word has it as well
-                    child.counter += 1
-                    # And point the node to the child that contains this char
-                    node = child
-                    found_in_child = True
-                    break
-            # We did not find it so add a new child
-            if not found_in_child:
-                new_node = TrieNode(char, node.accumulative_value+char)
-                node.children.append(new_node)
-                # And then point node to the new child
-                node = new_node
-        # Everything finished. Mark it as the end of a word.
+        try:
+            for char in word:
+                found_in_child = False
+                # Search for the character in the children of the present `node`
+                for child in node.children:
+                    if child.char == char:
+                        # We found it, increase the counter by 1 to keep track that another
+                        # word has it as well
+                        child.counter += 1
+                        # And point the node to the child that contains this char
+                        node = child
+                        found_in_child = True
+                        break
+                # We did not find it so add a new child
+                if not found_in_child:
+                    new_node = TrieNode(char, node.accumulative_value+char, parent=node)
+                    node.children.append(new_node)
+                    # And then point node to the new child
+                    node = new_node
+            # Everything finished. Mark it as the end of a word.
+        except TypeError:
+            print(word)
         node.word_finished = True
 
     def find_prefix(self, root, prefix: str) -> Tuple[bool, int]:
