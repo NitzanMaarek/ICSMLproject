@@ -139,7 +139,7 @@ class Trie:
         # If the root node has no children, then return False.
         # Because it means we are trying to search in an empty trie
         if not root.children:
-            return False, 0
+            return None
         for char in prefix:
             char_not_found = True
             # Search through all the children of the present `node`
