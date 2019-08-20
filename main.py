@@ -32,14 +32,20 @@ def create_pygtrie_of_dataset(df):
 
 def pipeline():
 
+    print('The code here is not ready to run without reading the entire functionality of the project.'
+          ' Thanks for consideration')
+
+    # calculate_threshold_tpr_fpr()
     # *** Read the dataset to memory ***
     # malicious_dataset = pd.read_parquet(r"data.parquet", engine='pyarrow', columns=["url"])
     # malicious_dataset = pd.read_csv(r"failed_dataset.csv")
 
-    url_probability_dict_to_csv()
-    # calculate_average_from_csv('Malicious_entire_dataset_prob_results.csv')
-    # calculate_average_from_csv('Malicious_100k_instances.csv')
+    # url_probability_dict_to_csv()
+    # calculate_average_from_csv('Benign_100k_Test_Probability_results.csv', 'Benign_100k_Test_AVG_Prob_results.csv')
+    # calculate_average_from_csv('Malicious_entire_dataset_prob_results.csv', 'Malicious_entire_dataset_AVG_Prob_results.csv')
     #
+
+
 
     # benign_dataset = pd.read_csv(r"alexa_top-1m.csv")
     # benign_dataset.sample(frac=1)
@@ -106,6 +112,221 @@ def pipeline():
 
     # print(mal_trie_loaded)
     # print(benign_trie_loaded)
+
+
+def calculate_threshold_tpr_fpr():
+    """
+    Method prints results for different probability threshold for classification.
+    """
+    # benign_avg_prob_df = pd.read_csv('Benign_100k_Test_AVG_Prob_results.csv')
+    # malicious_avg_prob_df = pd.read_csv('Malicious_entire_dataset_AVG_Prob_results.csv')
+
+    # print('***** Calculating Benign Classification Results *****')
+    # threshold_01 = 0
+    # threshold_011 = 0
+    # threshold_012 = 0
+    # threshold_013 = 0
+    # threshold_014 = 0
+    # threshold_015 = 0
+    # threshold_017 = 0
+    # threshold_018 = 0
+    # threshold_02 = 0
+    # threshold_019 = 0
+    # threshold_009 = 0
+    # threshold_008 = 0
+    # threshold_007 = 0
+    # threshold_006 = 0
+    # threshold_005 = 0
+    # threshold_004 = 0
+    # threshold_003 = 0
+    # threshold_002 = 0
+    # threshold_001 = 0
+    #
+    # for row in benign_avg_prob_df.iterrows():
+    #
+    #     prob = row[1]['Average Probability']
+
+        # if prob > 0.1:
+        #     threshold_01 += 1
+        # if prob > 0.11:
+        #     threshold_011 += 1
+        # if prob > 0.12:
+        #     threshold_012 += 1
+        # if prob > 0.09:
+        #     threshold_009 += 1
+        # if prob > 0.08:
+        #     threshold_008 += 1
+        # if prob > 0.07:
+        #     threshold_007 += 1
+        # if prob > 0.13:
+        #     threshold_013 += 1
+        # if prob > 0.14:
+        #     threshold_014 += 1
+        # if prob > 0.15:
+        #     threshold_015 += 1
+        # if prob > 0.17:
+        #     threshold_017 += 1
+        # if prob > 0.18:
+        #     threshold_018 += 1
+        # if prob > 0.19:
+        #     threshold_019 += 1
+        # if prob > 0.2:
+        #     threshold_02 += 1
+        # if prob > 0.06:
+        #     threshold_006 += 1
+        # if prob > 0.05:
+        #     threshold_005 += 1
+        # if prob > 0.04:
+        #     threshold_004 += 1
+        # if prob > 0.03:
+        #     threshold_003 += 1
+        # if prob > 0.02:
+        #     threshold_002 += 1
+        # if prob > 0.01:
+        #     threshold_001 += 1
+
+    # print('Threshold 0.1: Accuracy of ' + str(threshold_01) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_01/len(benign_avg_prob_df)))
+    # print('Threshold 0.11: Accuracy of ' + str(threshold_011) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_011 / len(benign_avg_prob_df)))
+    # print('Threshold 0.12: Accuracy of ' + str(threshold_012) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_012 / len(benign_avg_prob_df)))
+    # print('Threshold 0.09: Accuracy of ' + str(threshold_009) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_009 / len(benign_avg_prob_df)))
+    # print('Threshold 0.08: Accuracy of ' + str(threshold_008) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_008 / len(benign_avg_prob_df)))
+    # print('Threshold 0.07: Accuracy of ' + str(threshold_007) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_007 / len(benign_avg_prob_df)))
+    # print('Threshold 0.13: Accuracy of ' + str(threshold_013) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_013 / len(benign_avg_prob_df)))
+    # print('Threshold 0.14: Accuracy of ' + str(threshold_014) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_014 / len(benign_avg_prob_df)))
+    # print('Threshold 0.15: Accuracy of ' + str(threshold_015) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_015 / len(benign_avg_prob_df)))
+    # print('Threshold 0.17: Accuracy of ' + str(threshold_017) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_017 / len(benign_avg_prob_df)))
+    # print('Threshold 0.18: Accuracy of ' + str(threshold_018) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_018 / len(benign_avg_prob_df)))
+    # print('Threshold 0.19: Accuracy of ' + str(threshold_019) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_019 / len(benign_avg_prob_df)))
+    # print('Threshold 0.2: Accuracy of ' + str(threshold_02) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_02 / len(benign_avg_prob_df)))
+    # print('Threshold 0.06: Accuracy of ' + str(threshold_006) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_006 / len(benign_avg_prob_df)))
+    # print('Threshold 0.05: Accuracy of ' + str(threshold_005) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_005 / len(benign_avg_prob_df)))
+    # print('Threshold 0.04: Accuracy of ' + str(threshold_004) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_004 / len(benign_avg_prob_df)))
+    # print('Threshold 0.03: Accuracy of ' + str(threshold_003) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_003 / len(benign_avg_prob_df)))
+    # print('Threshold 0.02: Accuracy of ' + str(threshold_002) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_002 / len(benign_avg_prob_df)))
+    # print('Threshold 0.01: Accuracy of ' + str(threshold_001) + ' out of: ' + str(len(benign_avg_prob_df)) + ' is: '
+    #       + str(threshold_001 / len(benign_avg_prob_df)))
+
+    # print('***** Calculating Malicious Classification Results *****')
+    # threshold_01 = 0
+    # threshold_011 = 0
+    # threshold_012 = 0
+    # threshold_009 = 0
+    # threshold_008 = 0
+    # threshold_007 = 0
+    # threshold_013 = 0
+    # threshold_014 = 0
+    # threshold_015 = 0
+    # threshold_017 = 0
+    # threshold_018 = 0
+    # threshold_02 = 0
+    # threshold_019 = 0
+    # threshold_006 = 0
+    # threshold_005 = 0
+    # threshold_004 = 0
+    # threshold_003 = 0
+    # threshold_002 = 0
+    # threshold_001 = 0
+    #
+    # for row in malicious_avg_prob_df.iterrows():
+    #
+    #     prob = row[1]['Average Probability']
+
+        # if prob > 0.1:
+        #     threshold_01 += 1
+        # if prob > 0.11:
+        #     threshold_011 += 1
+        # if prob > 0.12:
+        #     threshold_012 += 1
+        # if prob > 0.09:
+        #     threshold_009 += 1
+        # if prob > 0.08:
+        #     threshold_008 += 1
+        # if prob > 0.07:
+        #     threshold_007 += 1
+        # if prob > 0.13:
+        #     threshold_013 += 1
+        # if prob > 0.14:
+        #     threshold_014 += 1
+        # if prob > 0.15:
+        #     threshold_015 += 1
+        # if prob > 0.17:
+        #     threshold_017 += 1
+        # if prob > 0.18:
+        #     threshold_018 += 1
+        # if prob > 0.19:
+        #     threshold_019 += 1
+        # if prob > 0.2:
+        #     threshold_02 += 1
+        # if prob > 0.06:
+        #     threshold_006 += 1
+        # if prob > 0.05:
+        #     threshold_005 += 1
+        # if prob > 0.04:
+        #     threshold_004 += 1
+        # if prob > 0.03:
+        #     threshold_003 += 1
+        # if prob > 0.02:
+        #     threshold_002 += 1
+        # if prob > 0.01:
+        #     threshold_001 += 1
+
+    # print('Threshold 0.1: Accuracy of ' + str(threshold_01) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_01 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.11: Accuracy of ' + str(threshold_011) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_011 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.12: Accuracy of ' + str(threshold_012) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_012 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.09: Accuracy of ' + str(threshold_009) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_009 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.08: Accuracy of ' + str(threshold_008) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_008 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.07: Accuracy of ' + str(threshold_007) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_007 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.13: Accuracy of ' + str(threshold_013) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_013 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.14: Accuracy of ' + str(threshold_014) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_014 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.15: Accuracy of ' + str(threshold_015) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_015 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.17: Accuracy of ' + str(threshold_017) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_017 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.18: Accuracy of ' + str(threshold_018) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_018 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.19: Accuracy of ' + str(threshold_019) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_019 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.2: Accuracy of ' + str(threshold_02) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_02 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.06: Accuracy of ' + str(threshold_006) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_006 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.05: Accuracy of ' + str(threshold_005) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_005 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.04: Accuracy of ' + str(threshold_004) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_004 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.03: Accuracy of ' + str(threshold_003) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_003 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.02: Accuracy of ' + str(threshold_002) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_002 / len(malicious_avg_prob_df)))
+    # print('Threshold 0.01: Accuracy of ' + str(threshold_001) + ' out of: ' + str(len(malicious_avg_prob_df)) + ' is: '
+    #       + str(threshold_001 / len(malicious_avg_prob_df)))
+
 
 def url_probability_dict_to_csv():
     """
@@ -199,12 +420,15 @@ def url_probability_dict_to_csv():
     save_dict_as_df('Malicious_entire_dataset_prob_results', url_dict)
 
 
-def calculate_average_from_csv(file_name):
+def calculate_average_from_csv(file_name, result_file_name):
     """
     Calculate average of probabilities for each URL Name
     :param file_name: CSV file with columns: 'URL Name' and 'Probabilities'
+    :param result_file_name: CSV file name to save results in
     """
     df = pd.read_csv(file_name)
+    url_name_to_avg_prob_df = []
+    url_name_to_avg_prob_dict = {}
     counter = 0
     print('Calculating average probabilities')
     for row in df.iterrows():
@@ -216,13 +440,16 @@ def calculate_average_from_csv(file_name):
             continue
         sum_probabilities = 0.0
         for prob in prob_arr:
-            if prob == 1:
-                # print(url_name)
-                prob = 0
+            # if prob == 1:
+            #     # print(url_name)
+            #     prob = 0
             sum_probabilities = sum_probabilities + prob
         avg_probabilities = sum_probabilities/prob_arr_len
         if avg_probabilities > 0.09:
             counter += 1
+        url_name_to_avg_prob_dict[url_name] = avg_probabilities
+    url_name_to_avg_prob_df = pd.DataFrame(list(url_name_to_avg_prob_dict.items()), columns=['URL Name', 'Average Probability'])
+    url_name_to_avg_prob_df.to_csv(result_file_name)
     print('Number of URLs with probability over 0.09 is: ' + str(counter))
     print('Accuracy of: ' + str(counter) + ' out of: ' + str(len(df)) + ' is: ' + str(counter / len(df)))
 
